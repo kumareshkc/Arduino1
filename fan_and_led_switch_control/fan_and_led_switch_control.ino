@@ -1,4 +1,6 @@
 
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x3F, 20 , 4);
 const int buttonPin1 = 2;
 const int buttonPin2 = 4;
 const int buttonPin3 = 7;
@@ -18,8 +20,6 @@ int lastButtonState3 = 0;     // previous state of the button
 int buttonState4 = 0;         // current state of the button
 int lastButtonState4 = 0;     // previous state of the button
 int x = 5;
-
-// Variables will change:
 int ledState = HIGH;         // the current state of the output pin
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
@@ -41,7 +41,9 @@ void setup()
   pinMode(buttonPin3, INPUT_PULLUP);
   pinMode(buttonPin4, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
-
+  lcd.begin();// Turn on the blacklight and print a message.
+  lcd.backlight();
+  lcd.print(" HELLO ! WELCOME ");  //Print Message on First Row
   // set initial LED state
   digitalWrite(ledPin, ledState);
 }
@@ -56,6 +58,7 @@ void loop() {
 
   // If the switch changed, due to noise or pressing:
   if (reading != lastButtonState1) {
+       
     // reset the debouncing timer
     lastDebounceTime = millis();
   }
@@ -66,10 +69,12 @@ void loop() {
 
     // if the button state has changed:
     if (reading != buttonState1) {
+      
       buttonState1 = reading;
 
       // only toggle the LED if the new button state is HIGH
       if (buttonState1 == HIGH) {
+        
         ledState = !ledState;
       }
     }
@@ -85,6 +90,11 @@ void loop() {
 
 if(ledState == 0)
 { 
+       lcd.setCursor(0, 1); //Set cursor to first column of second row
+       lcd.print("                "); //Print blanks to clear the row
+       lcd.setCursor(0, 1);  //Set Cursor again to first column of second row
+       lcd.print("FAN IS SELECTED ");  //Print your units.
+       
  buttonState2 = digitalRead(buttonPin2);
   if (buttonState2 != lastButtonState2)
   {
@@ -137,6 +147,10 @@ if(ledState == 0)
       digitalWrite(motorPin1, LOW);
       digitalWrite(motorPin2, LOW);
       Serial.println("off");
+      lcd.setCursor(0, 1); //Set cursor to first column of second row
+      lcd.print("                "); //Print blanks to clear the row
+      lcd.setCursor(0, 1);  //Set Cursor again to first column of second row
+      lcd.print("FAN IS OFF NOW ");  //Print your units.
     }
   }
 }
@@ -145,6 +159,11 @@ if(ledState == 0)
 
 if(ledState == 1 )
 { 
+         lcd.setCursor(0, 1); //Set cursor to first column of second row
+         lcd.print("                "); //Print blanks to clear the row
+         lcd.setCursor(0, 1);  //Set Cursor again to first column of second row
+         lcd.print("LED IS SELECTED ");  //Print your units.
+  
  buttonState2 = digitalRead(buttonPin2);
   if (buttonState2 != lastButtonState2)
   {
@@ -189,6 +208,10 @@ if(ledState == 1 )
     {
       analogWrite(enable2 , 0);
       Serial.println("off");
+      lcd.setCursor(0, 1); //Set cursor to first column of second row
+      lcd.print("                "); //Print blanks to clear the row
+      lcd.setCursor(0, 1);  //Set Cursor again to first column of second row
+      lcd.print("LED IS NOW OFF ");  //Print your units.
     }
   }
 }
